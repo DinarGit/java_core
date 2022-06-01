@@ -1,53 +1,144 @@
 public class Main {
 
+   public class LessonFruits {
+
     public static void main(String[] args) {
+        doLesson_Fruits();
 
-        Integer arr1[] = {1, 2, 3, 4, 5, 6, 7};
-        String arr2[] = {"A", "B", "C"} ;
-        swap(arr1,1,4);
-        swap(arr2,0,2);
+        String[] array = {"Sasha", "Masha", "Boris", "Vova", "Artem"};
+        //doLesson_Array(array, 1,2);
 
-        String[] arrayOfStrings = {"A", "B", "C", "D"};
-        asList(arrayOfStrings);
+        Integer[] integers = {5,4,3,2,1};
+       // doLesson_ArrayWithoutTemp(integers, 1,2);
+    }
 
-        Box<Orange> or = new Box<>();
-        Box<Orange> or1 = new Box<>();
-        Box<Apple> ap = new Box<>();
-        Box<Apple> ap1 = new Box<>();
-        System.out.println("Task3");
-        System.out.println("'g' - addFruit: ");
-        or.addFruit(new Orange(),10);
-        or1.addFruit(new Orange(),12);
-        ap.addFruit(new Apple(),8);
-        ap1.addFruit(new Apple(),4);
-        System.out.println("Box 1: "+or.getWeight());
-        System.out.println("Box 2: "+or1.getWeight());
-        System.out.println("Box 3: "+ap.getWeight());
-        System.out.println("Box 4: "+ap1.getWeight());
-        System.out.println("'e' - compare(): ");
-        System.out.println("Box 1 equals box 3: "+or.compare(ap));
-        System.out.println("Box 2 equals box 4: "+or1.compare(ap1));
-        System.out.println("'f' - pourTo(): ");
-        or.pourTo(or1);
-        ap.pourTo(ap1);
-        System.out.println("'d' - getWeight(): ");
-        System.out.println("Box 1: "+or.getWeight());
-        System.out.println("Box 2: "+or1.getWeight());
-        System.out.println("Box 3: "+ap.getWeight());
-        System.out.println("Box 4: "+ap1.getWeight());
+    private static void doLesson_Fruits() {
+        BoxFruit<Apple> appleBox = new BoxFruit<Apple>(1);
+        BoxFruit<Orange> orangeBox = new BoxFruit<Orange>(1.5);
+        BoxFruit<Apple> appleBox2 = new BoxFruit<Apple>(1);
 
+        for (int i = 0; i < 3; i++) {
+            orangeBox.addFruit(new Orange());
+            appleBox.addFruit(new Apple());
+            appleBox2.addFruit(new Apple());
+        }
+
+        appleBox.addFruit(new Apple());
+        appleBox.addFruit(new Apple());
+
+        appleBox2.addFruit(new Apple());
+
+
+        System.out.println("Weight appleBox: " + appleBox.getBoxWeight());
+        System.out.println("Weight orangeBox: " + orangeBox.getBoxWeight());
+        System.out.println("Weights equals - " + appleBox.compare(orangeBox));
+        System.out.println("---------------------------------------------");
+
+        appleBox.addFruits(appleBox2);
 
     }
-    public static void swap(Object[] arr, int n1, int n2){
-        System.out.println("Task1: "+Arrays.toString(arr));
-        Object sw = arr[n1];
-        arr[n1]=arr[n2];
-        arr[n2]=sw;
-        System.out.println("The result of the replacement: "+Arrays.toString(arr)+"\n================================");
-    }
-    public static <T> void asList(T[]arr){
 
-        ArrayList<T> alt = new ArrayList<>(Arrays.asList(arr));
-        System.out.println("Task2 and the result of the conversion : "+alt+"\n================================");
+    private static void doLesson_ArrayWithoutTemp(Integer[] integers, int i, int j) {
+
+        Integer a = integers[i];
+        Integer b = integers[j];
+
+        a = a + b;
+        b = b - a;
+        b = -b;
+        a = a - b;
+
+        integers[i] = a;
+        integers[j] = b;
+
+        printArray(integers);
     }
+
+    public static void doLesson_Array(Object[] array, int firstIndex, int secondIndex) {
+        Object temp = array[firstIndex];
+        array[firstIndex] = array[secondIndex];
+        array[secondIndex] = temp;
+        printArray(array);
+    }
+
+    private static void printArray(Object[] array) {
+        System.out.println(Arrays.toString(array));
+    
+}
+    }
+    
+    public class Apple extends Fruit {
+
+    public Apple () {
+        super(1.0f);
+    }
+
+}
+    
+    public class BoxFruit<F> {
+
+    private double weightFruit = 0.0;
+    ArrayList<F> fruits = new ArrayList();
+
+    public <F> BoxFruit(double weightFruit) {
+        this.weightFruit= weightFruit;
+    }
+
+    public void addFruit(F fruit) {
+        fruits.add(fruit);
+    }
+
+    public double getBoxWeight(){
+        return fruits.size() * weightFruit;
+    }
+
+    public boolean compare(BoxFruit<?> box){
+        return Math.abs(getBoxWeight() - box.getBoxWeight()) < 0.00001;
+    }
+
+    public void addFruits(BoxFruit<F> boxFruit){
+        System.out.println("Before merging. Quantity box 1: " + fruits.size());
+        System.out.println("Before merging. Quantity box 2: " + boxFruit.fruits.size());
+        fruits.addAll(boxFruit.fruits);
+        boxFruit.fruits.clear();
+        boxFruit.fruits.trimToSize();
+        System.out.println("After merging. Quantity box 1: " + fruits.size());
+        System.out.println("After merging. Quantity box 2: " + boxFruit.fruits.size());
+    }
+
+}
+
+public class Fruit {
+    private int amount;
+    private float weight;
+
+    public Fruit (float weight) {
+        this.weight = weight;
+    }
+
+    public int getAmount() {
+        return amount;
+    }
+
+    public float getWeight() {
+        return weight;
+    }
+
+    public void setAmount(int amount) {
+        this.amount = amount;
+    }
+
+    public void setWeight(float weight) {
+        this.weight = weight;
+    }
+}
+
+public class Orange extends Fruit {
+
+    public Orange() {
+        super(1.5f);
+    }
+
+}
+    
 }
