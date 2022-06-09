@@ -1,14 +1,18 @@
-public class WritingCSVFileExample
+static void Main()
 {
-    public static void main(String[] args) throws Exception
+    string text = "";
+    using (StreamReader fs = new StreamReader(@"С:\dir_1.txt"))
     {
-        String csv = "data.csv";
-        CSVWriter writer = new CSVWriter(new FileWriter(csv));
-        //Create record
-        String [] record = "80".split(",");
-        //Write the record to file
-        writer.writeNext(record);
-        //close the writer
-        writer.close();
-    }
+        while (true)
+        {
+            // Читаем строку из файла во временную переменную.
+            string temp = fs.ReadLine();
+            // Если достигнут конец файла, прерываем считывание.
+            if(temp == null) break;
+            // Пишем считанную строку в итоговую переменную.
+            text  += temp;
+        }
+     }
+     // Выводим на экран.
+     Console.WriteLine(text);
 }
